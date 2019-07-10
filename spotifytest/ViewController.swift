@@ -10,7 +10,8 @@ import UIKit
 import Kingfisher
 
 class ViewController: UIViewController {
-    var items : [Items]? = nil
+    var tracks: Tracks? = nil
+    var items = [Items]()
     let spotify = Spotify.sharedInstance
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -32,24 +33,31 @@ class ViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if let text = self.searchBar.text{
-            spotify.search(searchQuery: text) { response, error in
-                if let error = error{
-                    
-                }else if let response = response{
-                    self.items = response.tracks?.items
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
-    
     @objc fileprivate func requestAuthorizationBearerToken(_ notification: NSNotification){
         if let url = (notification.userInfo?["url"] as? URL){
             spotify.getCodeFromUrlParams(url: url)
         }
         
+    }
+    
+    fileprivate func performTrackSearch() {
+        if let searchText = searchBar.text, searchText != "" {
+            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { (newTracks, error, searchWasSuccessful) in
+                if (searchWasSuccessful) {
+                    if let newTracks = newTracks {
+                        if let newItems = newTracks.items {
+                            self.items.append(contentsOf: newItems)
+                        }
+                        self.tracks = newTracks
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        } else {
+            self.tracks = nil
+            self.items = [Items]()
+            self.tableView.reloadData()
+        }
     }
     
     
@@ -65,36 +73,23 @@ extension ViewController: UITableViewDelegate{
 extension ViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        if var items = self.items{
-            if let text = self.searchBar.text{
-                spotify.search(searchQuery: text) { response, error in
-                    if let error = error{
-                        
-                    }else if let response = response,
-                        let newItems = response.tracks?.items {
-                        print(newItems.count)
-                        items.append(contentsOf: newItems)
-                        self.items = items
-                        self.tableView.reloadData()
-                    }
-                }
-            }
-            return items.count + 1
+        if let tracks = self.tracks {
+            let hasMore = tracks.next != nil
+            return self.items.count + (hasMore ? 1 : 0)
         }
         return 0
-        
 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == items?.count{
+        if indexPath.row == self.items.count{
             let loadingCell = tableView.dequeueReusableCell(withIdentifier: "LoadingCell", for: indexPath) as! LoadingTableViewCell
+            performTrackSearch()
+            loadingCell.indicator.startAnimating()
             return loadingCell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackRowCell", for: indexPath) as! TrackRowTableViewCell
-        guard let item = items?[indexPath.row] else {
-            return cell
-        }
+        let item = items[indexPath.row]
         guard let artists = item.artists else {
             return cell
         }
@@ -125,17 +120,13 @@ extension ViewController: UITableViewDataSource{
 
 extension ViewController:UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        spotify.search(searchQuery: searchText) { response, error in
-            if let error = error{
-                
-            }else if let response = response{
-                self.items = response.tracks?.items
-                self.tableView.reloadData()
-            }
-        }
+        self.tracks = nil
+        self.items = [Items]()
+        performTrackSearch()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(true)
     }
+
 }

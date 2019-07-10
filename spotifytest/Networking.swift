@@ -60,7 +60,7 @@ class Networking {
     let defaultSession = URLSession(configuration: .default)
     var dataTask: URLSessionDataTask?
     
-    func request(url: URL, method: String, headers: [String:String]?, urlParameters: [String:String]?, bodyParameters: [String:String]?, completion: ((Data?, Error?) -> ())?){
+    func request(url: URL, method: String, headers: [String:String]?, urlParameters: [String:String]?, bodyParameters: [String:String]?, completion: ((Data?, Error?, Bool) -> ())?){
         dataTask?.cancel()
         var internalHeaders = [String:String]()
         internalHeaders["Content-Type"] = "application/x-www-form-urlencoded"
@@ -91,21 +91,21 @@ class Networking {
             }
             dataTask = defaultSession.dataTask(with: request, completionHandler: { (data, response, error) in
                 if let error = error {
-                    
-                }else if let response = response as? HTTPURLResponse{
+                    if let completion = completion {
+                        completion(nil, error, false)
+                    }
+                } else if let response = response as? HTTPURLResponse{
                     if let data = data, response.statusCode == 200 {
-                        
+                        if let completion = completion{
+                            completion(data, nil, false)
+                        }
                     }else if response.statusCode == 401{
-                        Spotify.sharedInstance.forceFetchToken()
+                        if let completion = completion{
+                            completion(nil, nil, true)
+                        }
                     }
                 }
-                else if let data = data,
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode == 200 {
-                }
-                if let completion = completion{
-                    completion(data,error)
-                }
+                
             })
             dataTask?.resume()
         }
