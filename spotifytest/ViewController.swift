@@ -19,18 +19,26 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.searchBar.delegate = self
-        self.searchBar.returnKeyType = .done
-        searchBar.showsScopeBar = false
-        tableView.tableFooterView = UIView()
-        self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
-        self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
+        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
+        self.configTableView()
+        self.configSearchBar()
         NotificationCenter.default.addObserver(self, selector: #selector(self.requestAuthorizationBearerToken(_:)), name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil)
         _ = spotify.getTokenIfNeeded()
         
-        
+    }
+    
+    fileprivate func configSearchBar(){
+        self.searchBar.returnKeyType = .done
+        self.searchBar.showsScopeBar = false
+        self.searchBar.delegate = self
+    }
+    
+    fileprivate func configTableView(){
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView()
+        self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
+        self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
     }
     
     @objc fileprivate func requestAuthorizationBearerToken(_ notification: NSNotification){
@@ -42,14 +50,14 @@ class ViewController: UIViewController {
     
     fileprivate func performTrackSearch() {
         if let searchText = searchBar.text, searchText != "" {
-            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { (newTracks, error, searchWasSuccessful) in
+            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { [weak self](newTracks, error, searchWasSuccessful) in
                 if (searchWasSuccessful) {
                     if let newTracks = newTracks {
                         if let newItems = newTracks.items {
-                            self.items.append(contentsOf: newItems)
+                            self?.items.append(contentsOf: newItems)
                         }
-                        self.tracks = newTracks
-                        self.tableView.reloadData()
+                        self?.tracks = newTracks
+                        self?.tableView.reloadData()
                     }
                 }
             }
@@ -72,13 +80,13 @@ extension ViewController: UITableViewDelegate{
 
 extension ViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        
         if let tracks = self.tracks {
             let hasMore = tracks.next != nil
             return self.items.count + (hasMore ? 1 : 0)
         }
         return 0
-
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -128,5 +136,5 @@ extension ViewController:UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(true)
     }
-
+    
 }
