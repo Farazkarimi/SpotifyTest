@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import Reachability
 
 class ViewController: UIViewController {
     var tracks: Tracks? = nil
@@ -25,6 +26,17 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.requestAuthorizationBearerToken(_:)), name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil)
         _ = spotify.getTokenIfNeeded()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let reachability = Reachability()!
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
+        do{
+            try reachability.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
     }
     
     fileprivate func configSearchBar(){
@@ -68,7 +80,17 @@ class ViewController: UIViewController {
         }
     }
     
-    
+    @objc func reachabilityChanged(note: Notification) {
+        
+        let reachability = note.object as! Reachability
+        
+        reachability.whenReachable = { _ in
+            print("Reachable")
+        }
+        reachability.whenUnreachable = { _ in
+            print("unReachable")
+        }
+    }
     
 }
 
