@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0335603F3BE48BA5F9033403 /* Pods_spotifytest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4E51FAF19CE5FBDF0CF141 /* Pods_spotifytest.framework */; };
+		7C03428522D7476E006C7999 /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03428422D7476E006C7999 /* URL+QueryParameters.swift */; };
 		7CB5BAEE22D5092B005CE98E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5BAED22D5092B005CE98E /* AppDelegate.swift */; };
 		7CB5BAF022D5092B005CE98E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB5BAEF22D5092B005CE98E /* ViewController.swift */; };
 		7CB5BAF322D5092B005CE98E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CB5BAF122D5092B005CE98E /* Main.storyboard */; };
@@ -47,6 +48,7 @@
 		2F4E51FAF19CE5FBDF0CF141 /* Pods_spotifytest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spotifytest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F2E0B37E4EE548E36987D38 /* Pods_spotifytestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spotifytestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74FA45CED4C18C814BD1ED0D /* Pods-spotifytest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spotifytest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-spotifytest/Pods-spotifytest.debug.xcconfig"; sourceTree = "<group>"; };
+		7C03428422D7476E006C7999 /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
 		7CB5BAEA22D5092B005CE98E /* spotifytest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spotifytest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CB5BAED22D5092B005CE98E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CB5BAEF22D5092B005CE98E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7C03428322D74716006C7999 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7C03428422D7476E006C7999 /* URL+QueryParameters.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		7CB5BAE122D5092A005CE98E = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +136,7 @@
 		7CB5BAEC22D5092B005CE98E /* spotifytest */ = {
 			isa = PBXGroup;
 			children = (
+				7C03428322D74716006C7999 /* Extensions */,
 				D0C24D4F22D5FFAE00BFF5D9 /* Models */,
 				7CB5BAED22D5092B005CE98E /* AppDelegate.swift */,
 				7CB5BAEF22D5092B005CE98E /* ViewController.swift */,
@@ -362,6 +373,7 @@
 				D0C24D5822D5FFC000BFF5D9 /* Tracks.swift in Sources */,
 				D0C24D5E22D5FFC000BFF5D9 /* Items.swift in Sources */,
 				D0C24D5F22D5FFC000BFF5D9 /* External_urls.swift in Sources */,
+				7C03428522D7476E006C7999 /* URL+QueryParameters.swift in Sources */,
 				7CB5BAF022D5092B005CE98E /* ViewController.swift in Sources */,
 				D0C24D5922D5FFC000BFF5D9 /* External_ids.swift in Sources */,
 				D0C24D4E22D5D84E00BFF5D9 /* Spotify.swift in Sources */,

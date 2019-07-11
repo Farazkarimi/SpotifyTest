@@ -42,14 +42,15 @@ class ViewController: UIViewController {
     
     fileprivate func performTrackSearch() {
         if let searchText = searchBar.text, searchText != "" {
-            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { (newTracks, error, searchWasSuccessful) in
+            spotify.trackSearch(searchQuery: searchText, currentTracks: self.tracks) { [weak self] (newTracks, error, searchWasSuccessful) in
+
                 if (searchWasSuccessful) {
                     if let newTracks = newTracks {
                         if let newItems = newTracks.items {
-                            self.items.append(contentsOf: newItems)
+                            self?.items.append(contentsOf: newItems)
                         }
-                        self.tracks = newTracks
-                        self.tableView.reloadData()
+                        self?.tracks = newTracks
+                        self?.tableView.reloadData()
                     }
                 }
             }
@@ -97,10 +98,10 @@ extension ViewController: UITableViewDataSource{
             return cell
         }
         
-        guard let imageUrl = item.album?.images?.first?.url else{
+        guard let images = item.album?.images else{
             return cell
         }
-        
+    
         guard let title = item.name else {
             return cell
         }
@@ -109,11 +110,36 @@ extension ViewController: UITableViewDataSource{
         cell.artistLabel.text = artistsName.joined(separator: " - ")
         cell.albumLabel.text = albumName
         cell.titleLabel.text = title
-        cell.trackImage.kf.setImage(with: URL(string: imageUrl), placeholder: UIImage(named: "headphone"))
-        
+        chooseAndSetImage(images: images, imageView: cell.trackImage)
         return cell
         
     }
+        
+        func chooseAndSetImage(images: [Images], imageView: UIImageView) {
+
+            let imageUrl: String?
+            if images.count > 2 {
+                imageUrl = images[1].url
+            } else {
+                imageUrl = images.last?.url
+            }
+            if let imageUrl = imageUrl {
+                let processor = DownsamplingImageProcessor(size: imageView.frame.size)
+                let options: [KingfisherOptionsInfoItem] = [
+                    .processor(processor),
+                    .scaleFactor(UIScreen.main.scale),
+                    .transition(.fade(0.3))
+                ]
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                    with: URL(string: imageUrl),
+                    placeholder: UIImage(named: "headphone"),
+                    options: options)
+                
+            } else {
+                imageView.image = UIImage(named: "headphone")
+            }
+        }
     
     
 }
@@ -122,6 +148,7 @@ extension ViewController:UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.tracks = nil
         self.items = [Items]()
+        self.tableView.reloadData()
         performTrackSearch()
     }
     

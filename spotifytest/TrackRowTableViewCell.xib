@@ -25,7 +25,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="headphone" translatesAutoresizingMaskIntoConstraints="NO" id="4Wh-ij-RWd">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Wh-ij-RWd">
                         <rect key="frame" x="346" y="0.0" width="83" height="82.5"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="82.5" id="Y75-XN-I65"/>
@@ -72,7 +72,4 @@
             <point key="canvasLocation" x="216.66666666666669" y="79.352678571428569"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="headphone" width="1141.5" height="1083"/>
-    </resources>
 </document>
