@@ -14,7 +14,5 @@ class TrackRowTableViewCell: UITableViewCell {
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var trackImage: UIImageView!
-    override func prepareForReuse() {
-        //self.trackImage.image = UIImage(named: "headphone")
-    }
+    
 }

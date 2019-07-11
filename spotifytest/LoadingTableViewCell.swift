@@ -8,19 +8,42 @@
 
 import UIKit
 
-class LoadingTableViewCell: UITableViewCell {
+protocol NetworkErrorAware {
+    func configure(mode: WaitingMode)
+    func getMode() -> WaitingMode
+}
+enum WaitingMode {
+    case retry
+    case wait
+}
+class LoadingTableViewCell: UITableViewCell, NetworkErrorAware {
 
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBOutlet weak var retryButton: UIButton!
+    
+    var mode: WaitingMode = .wait
+    var searcher: SearcherDelegate?
+    func configure(mode: WaitingMode) {
+        self.mode = mode
+        switch mode {
+        case .retry:
+            indicator.stopAnimating()
+            indicator.isHidden = true
+            retryButton.isHidden = false
+        case .wait:
+            indicator.startAnimating()
+            indicator.isHidden = false
+            retryButton.isHidden = true
+        }
     }
     
+    func getMode() -> WaitingMode {
+        return mode
+    }
+    
+    @IBAction func retry(_ sender: Any) {
+        configure(mode: .wait)
+        searcher?.performSearch()
+    }
 }

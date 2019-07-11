@@ -22,8 +22,17 @@
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="UcZ-TC-cbg">
                         <rect key="frame" x="150" y="12" width="20" height="20"/>
                     </activityIndicatorView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTP-eg-azU">
+                        <rect key="frame" x="142" y="7" width="37" height="30"/>
+                        <state key="normal" title="Retry"/>
+                        <connections>
+                            <action selector="retry:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="MdH-I2-N2v"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="sTP-eg-azU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Nqr-5o-aII"/>
+                    <constraint firstItem="sTP-eg-azU" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="YlR-YY-JOs"/>
                     <constraint firstItem="UcZ-TC-cbg" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="g8f-Iq-FES"/>
                     <constraint firstItem="UcZ-TC-cbg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kdc-nT-rDa"/>
                 </constraints>
@@ -31,6 +40,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="indicator" destination="UcZ-TC-cbg" id="5ys-1H-rqj"/>
+                <outlet property="retryButton" destination="sTP-eg-azU" id="UYj-h9-lpz"/>
             </connections>
         </tableViewCell>
     </objects>

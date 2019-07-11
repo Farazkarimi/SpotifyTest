@@ -94,6 +94,7 @@ class Networking {
                     if let completion = completion {
                         completion(nil, error, false)
                     }
+                    return
                 } else if let response = response as? HTTPURLResponse{
                     if let data = data, response.statusCode == 200 {
                         if let completion = completion{
@@ -110,5 +111,4 @@ class Networking {
             dataTask?.resume()
         }
     }
-    
 }
