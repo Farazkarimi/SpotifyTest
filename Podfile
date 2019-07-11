@@ -6,6 +6,7 @@ target 'spotifytest' do
   use_frameworks!
 	pod 'Kingfisher', '~> 5.0'
 	pod 'SwiftyJSON', '~> 4.0'
+	pod 'ReachabilitySwift'
 
   # Pods for spotifytest
 
