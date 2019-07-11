@@ -18,27 +18,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="N1x-PT-hjO">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="uRL-UA-bG7"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spotify" translatesAutoresizingMaskIntoConstraints="NO" id="0Qv-hP-9yH">
+                                <rect key="frame" x="132" y="378" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="BwI-fX-21m"/>
+                                    <constraint firstAttribute="width" constant="150" id="vU6-Ly-Sh3"/>
+                                </constraints>
+                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZIA-eE-Zvr">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="N1x-PT-hjO">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
+                                <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="N1x-PT-hjO" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="71r-X3-rbr"/>
                             <constraint firstItem="ZIA-eE-Zvr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="E7V-rq-6CN"/>
-                            <constraint firstItem="ZIA-eE-Zvr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="IWg-cA-ASE"/>
+                            <constraint firstItem="N1x-PT-hjO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MUO-na-C8P"/>
+                            <constraint firstItem="0Qv-hP-9yH" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="i51-wM-IPn"/>
+                            <constraint firstItem="N1x-PT-hjO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lA5-FF-yKC"/>
+                            <constraint firstItem="0Qv-hP-9yH" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="tCT-U4-ttX"/>
                             <constraint firstItem="ZIA-eE-Zvr" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="uXC-QP-SaR"/>
+                            <constraint firstItem="ZIA-eE-Zvr" firstAttribute="top" secondItem="N1x-PT-hjO" secondAttribute="bottom" id="xa9-u0-R67"/>
                             <constraint firstAttribute="trailing" secondItem="ZIA-eE-Zvr" secondAttribute="trailing" id="y0v-dD-X24"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="searchBar" destination="N1x-PT-hjO" id="yNN-RB-Ljo"/>
+                        <outlet property="spotifyLogo" destination="0Qv-hP-9yH" id="hmo-NL-gRT"/>
                         <outlet property="tableView" destination="ZIA-eE-Zvr" id="deS-rj-xbk"/>
                     </connections>
                 </viewController>
@@ -47,4 +63,7 @@
             <point key="canvasLocation" x="450.72463768115944" y="105.80357142857143"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Spotify" width="1000" height="1000"/>
+    </resources>
 </document>
