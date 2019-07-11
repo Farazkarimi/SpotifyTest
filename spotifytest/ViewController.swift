@@ -18,6 +18,7 @@ class ViewController: UIViewController, SearcherDelegate {
     var items = [Items]()
     let spotify = Spotify.sharedInstance
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var spotifyLogo: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
     var networkErrorAware: NetworkErrorAware? = nil
@@ -27,16 +28,19 @@ class ViewController: UIViewController, SearcherDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
+        
         self.configTableView()
         self.configSearchBar()
+        self.initialViews()
+        self.initialValues()
+    }
+
+    fileprivate func initialValues(){
+        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
         NotificationCenter.default.addObserver(self, selector: #selector(self.requestAuthorizationBearerToken(_:)), name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil)
         _ = spotify.getTokenIfNeeded()
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        let reachability = Reachability()!
+        let reachability = Reachability(hostname: "Spotify.com")!
         
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
         do{
@@ -44,6 +48,10 @@ class ViewController: UIViewController, SearcherDelegate {
         }catch{
             print("could not start reachability notifier")
         }
+    }
+    
+    fileprivate func initialViews(){
+        self.spotifyLogo.image = UIImage(named: "Spotify")
     }
     
     fileprivate func configSearchBar(){
@@ -55,6 +63,7 @@ class ViewController: UIViewController, SearcherDelegate {
     fileprivate func configTableView(){
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.isHidden = true
         self.tableView.tableFooterView = UIView()
         self.tableView.register(UINib(nibName: "TrackRowTableViewCell", bundle: nil), forCellReuseIdentifier: "TrackRowCell")
         self.tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingCell")
@@ -87,6 +96,7 @@ class ViewController: UIViewController, SearcherDelegate {
                             self?.items.append(contentsOf: newItems)
                         }
                         self?.tracks = newTracks
+                        (self?.items.count == 0) ? (self?.tableView.isHidden = true) : (self?.tableView.isHidden = false)
                         self?.tableView.reloadData()
                     }
                 }
@@ -96,6 +106,8 @@ class ViewController: UIViewController, SearcherDelegate {
             self.tracks = nil
             self.items = [Items]()
             self.networkErrorAware = nil
+            (items.count == 0) ? (self.tableView.isHidden = true) : (self.tableView.isHidden = false)
+
             self.tableView.reloadData()
         }
     }
@@ -171,6 +183,7 @@ extension ViewController: UITableViewDataSource{
         return cell
         
     }
+
         
         func chooseAndSetImage(images: [Images], imageView: UIImageView) {
 
@@ -197,8 +210,7 @@ extension ViewController: UITableViewDataSource{
                 imageView.image = UIImage(named: "headphone")
             }
         }
-    
-    
+
 }
 
 extension ViewController:UISearchBarDelegate{
