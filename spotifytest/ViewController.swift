@@ -21,16 +21,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
+        
         self.configTableView()
         self.configSearchBar()
-        self.spotifyLogo.image = UIImage(named: "Spotify")
+        self.initialViews()
+        self.initialValues()
+    }
+
+    fileprivate func initialValues(){
+        KingfisherManager.shared.cache.memoryStorage.config.totalCostLimit = 10000
         NotificationCenter.default.addObserver(self, selector: #selector(self.requestAuthorizationBearerToken(_:)), name: NSNotification.Name(rawValue: Constants.afterLoginNotificationKey), object: nil)
         _ = spotify.getTokenIfNeeded()
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         let reachability = Reachability(hostname: "Spotify.com")!
         
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
@@ -39,6 +41,10 @@ class ViewController: UIViewController {
         }catch{
             print("could not start reachability notifier")
         }
+    }
+    
+    fileprivate func initialViews(){
+        self.spotifyLogo.image = UIImage(named: "Spotify")
     }
     
     fileprivate func configSearchBar(){
@@ -150,8 +156,6 @@ extension ViewController: UITableViewDataSource{
         return cell
         
     }
-    
-    
 }
 
 extension ViewController:UISearchBarDelegate{
